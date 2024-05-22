@@ -1,0 +1,155 @@
+.page-title{
+    text-align: center;
+}
+
+.question-info{
+    text-align: center;
+}
+
+.comment-group-title{
+    margin-top: 20px;
+}
+
+.form-container{
+    width: 500px;
+    margin-top: 10px;
+    text-align: right;
+}
+
+.comment-group{
+    list-style: none;
+    padding-left: 0;
+}
+
+.comment-group li{
+    border-bottom:1px solid #eee;
+    padding: 10px 0;
+}
+
+.comment-group li .user-info{
+    height: 40px;
+    line-height:40px;
+    color: #9b9b9b;
+    font-size: 16px;
+}
+
+.user-info .avatar{
+    height:40px;
+    width: 40px;
+    float: left;
+    border-radius: 50%;
+}
+
+.user-info .username{
+    margin-left: 10px;
+}
+.user-info .create-time{
+    float: right;
+}
+.comment-content{
+    margin-left: 50px;
+}
+
+/* 表格样式 */
+th,
+td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #333;
+    color: white;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+table{
+    counter-reset: section;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.count::before{
+    counter-increment: section;
+    content: counter(section);
+}
+
+/* 样式：隐藏弹窗 */
+.modal {
+     display: none;
+     position: fixed;
+     z-index: 1;
+     left: 0;
+     top: 0;
+     width: 100%;
+     height: 100%;
+     overflow: auto;
+     background-color: rgba(0, 0, 0, 0.4);
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+    position: relative;
+}
+.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.modal-header {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.delete-modal {
+     display: none;
+     position: fixed;
+     z-index: 1;
+     left: 0;
+     top: 0;
+     width: 100%;
+     height: 100%;
+     overflow: auto;
+     background-color: rgba(0, 0, 0, 0.4);
+}
+.delete-modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    position: relative;
+}
+.delete-modal-header {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+/* 样式优化 */
+#warning-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    background-color: #dc143c;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 10px;
+    font-weight: bold;
+    color: #ffffff;
+    display: none; /* 默认隐藏 */
+}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title%}智能门锁-首页{%endblock%}
+
+{% block head%}
+<link href="{{ url_for('static', filename='css/slider.css') }}" rel="stylesheet" type="text/css" />
+<script src="{{ url_for('static', filename='js/slider.js') }}" type="text/javascript"></script>
+{% endblock%}
+
+{%block body%}
+<div id="slider" class="row" style="margin-top: 20px;">
+            <ul class="slieder-item-container custom-list custom-ul">
+                <li><a class="my_a" href="#"><img src="{{ url_for('static', filename='images/1.jpg') }}" /></a></li>
+                <li><a class="my_a" href="#"><img src="{{ url_for('static', filename='images/2.jpg') }}" /></a></li>
+                <li><a class="my_a" href="#"><img src="{{ url_for('static', filename='images/3.jpg') }}" /></a></li>
+                <li><a class="my_a" href="#"><img src="{{ url_for('static', filename='images/4.jpg') }}" /></a></li>
+                <li><a class="my_a" href="#"><img src="{{ url_for('static', filename='images/5.jpg') }}" /></a></li>
+            </ul>
+            <div class="arrow-container">
+                <span class="left-arrow"><</span>
+                <span class="right-arrow">></span>
+            </div>
+            <div class="indicator-container">
+                <span class="indicator active"></span>
+                <span class="indicator"></span>
+                <span class="indicator"></span>
+                <span class="indicator"></span>
+                <span class="indicator"></span>
+            </div>
+</div>
+{% endblock %}
+

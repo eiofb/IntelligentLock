@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title%}智能门锁-设备列表{%endblock%}
+
+{% block head%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/table.css')}}">
+<script src="{{ url_for('static', filename='jquery/jquery.3.6.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/table.js') }}"></script>
+{% endblock%}
+
+{%block body%}
+<div class="row" style="margin-top: 20px;">
+    <div class="col"></div>
+        <div class="col-10" align="center">
+            <a style="float:right" href="#" onclick="openAddModal()">
+                <button class="btn btn-info" type="button">添加设备</button>
+            </a>
+           <table>
+               <tr>
+                   <th>序号</th>
+                   <th>设备ID</th>
+                   <th>设备名称</th>
+                   <th>设备剩余电量</th>
+                   <th>操作</th>
+                </tr>
+               {% for device in device_list %}
+                    <tr>
+                        <td class="count"></td>
+                        <td><a href="{{ url_for('device.device_detail', device_id=device.id) }}">{{device.id}}</a></td>
+                        <td>
+                            <form id="nameForm" class="form-inline my-2 my-lg-0" method="POST" action="{{url_for('device.modify_device')}}">
+                                <input id="inputName" class="form-control mr-sm-2" placeholder="{{device.device_name}}" name="device_name">
+                                <input type="hidden" name="device_id" value="{{ device.id }}">
+                            </form>
+                        </td>
+                        <td>
+                            {% if device.remaining_power %}
+                                {{'%.2f%%' % (device.remaining_power * 100)}}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="#" onclick="openConfirmModal(event)">
+                                <button class="btn btn-danger" data-device-id="{{ device.id }}" type="button">删除</button>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+<!--                </form>-->
+        </div>
+    <div class="col"></div>
+</div>
+
+
+<!-- 弹窗 -->
+<div id="addDeviceModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeAddModal()">&times;</span>
+        <div class="modal-header">添加设备</div>
+        <!-- 在这里添加你的弹窗内容 -->
+        <div id="warning-message" style="display: center;"></div>
+         <div class="row mt-4">
+            <div class="col"></div>
+            <div class="col">
+                <form method="POST" action="#">
+                    <div class="form-group">
+                        <label>设备ID</label>
+                        <input type="text" class="form-control" name="add_device_id">
+                        <small id="idHelp" class="form-text text-muted">设备ID唯一且长度3-100</small>
+                    </div>
+                    <div class="form-group">
+                        <label>设备名</label>
+                        <input type="text" class="form-control" name="add_device_name">
+                        <small id="nameHelp" class="form-text text-muted">长度3-100</small>
+                    </div>
+                    <button id="add-device-btn" type="button" class="btn btn-primary btn-block">确认</button>
+                </form>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+</div>
+<div id="confirmModal" class="delete-modal">
+    <div class="delete-modal-content">
+        <span class="close" onclick="closeConfirmModal()">&times;</span>
+        <div class="delete-modal-header">确认删除设备及其记录</div>
+        <!-- 在这里添加你的弹窗内容 -->
+         <div class="row mt-4">
+            <div class="col"></div>
+            <div class="input-group">
+                <input type="hidden" id="deviceIdInput">
+                <div class="col"></div>
+                <button type="button" class="btn btn-danger" id="confirm-delete-btn">确认</button>
+                <div class="col"></div>
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-primary" onclick="closeConfirmModal()">取消</button>
+                </div>
+                <div class="col"></div>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

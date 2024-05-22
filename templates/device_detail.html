@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title%}{{device.device_id}}{%endblock%}
+
+{% block head%}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css')}}">
+{% endblock%}
+
+{%block body%}
+<div class="row" style="margin-top: 20px;">
+            <div class="col"></div>
+                <div class="col-10" align="center">
+                   <table>
+                   <thead >{{device.device_name}}</thead>
+                       <tr>
+                           <th>序号</th>
+                           <th>开锁方式</th>
+                           <th>开锁时间</th>
+                        </tr>
+
+                       {% for record in device.records %}
+                        <tr >
+                                <td class="count"></td>
+                                {% if record.open_type==0 %}
+                                    <td>密码</td>
+                                {% elif record.open_type==1 %}
+                                    <td>指纹</td>
+                                {% elif record.open_type==2 %}
+                                    <td>人脸</td>
+                                {% else %}
+                                    <td>-</td>
+                                {% endif %}
+                                <td>{{record.last_open_time}}</td>
+                        </tr>
+                       {% endfor %}
+                </table>
+            </div>
+            <div class="col"></div>
+        </div>
+{% endblock %}
+
