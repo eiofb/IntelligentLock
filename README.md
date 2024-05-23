@@ -167,7 +167,7 @@ flask的主入口程序在`app.py`中的`app.run(debug=True, port=5000)`，`debu
 
 ## 项目配置
 
-1. 下载项目必要python包：
+1. 下载项目依赖：
    - `pip install -r ./package.txt`
 2. 使用`utf8mb4`字符集创建本地数据库
 3. 打开`config.py`文件，进行以下配置：

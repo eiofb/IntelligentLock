@@ -1,6 +1,7 @@
 flask
 werkzeug
 wtforms
-blueprints
 flask_migrate
 flask_sqlalchemy
+flask_mail
+pymysql
