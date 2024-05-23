@@ -1,0 +1,6 @@
+flask
+werkzeug
+wtforms
+blueprints
+flask_migrate
+flask_sqlalchemy

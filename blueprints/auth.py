@@ -19,7 +19,6 @@ def login():
             password = form.password.data
             user = UserModel.query.filter_by(email=email).first()
             if not user:
-
                 return jsonify({"code": 500, "message": "", "data":
                     {"emailError": "邮箱在数据库不存在！"}})
             if check_password_hash(user.password, password):
