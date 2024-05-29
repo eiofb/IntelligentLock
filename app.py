@@ -32,5 +32,4 @@ def my_context_processor():
     return {"user": g.user}
 
 if __name__ == "__main__":
-    print("----------开始运行------------")
     app.run(debug=True, port=5000)
