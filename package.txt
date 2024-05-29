@@ -5,3 +5,4 @@ flask_migrate
 flask_sqlalchemy
 flask_mail
 pymysql
+email_validator
