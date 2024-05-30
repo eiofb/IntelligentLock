@@ -62,12 +62,12 @@ function bindDeviceDeleteClick(){
 
 // 整个网页加载完成后再执行
 $(function () {
-    document.getElementById("inputName").addEventListener("keyup", function(event) {
-        if (event.keyCode === 13) { // 按下回车键的键码是13
-            event.preventDefault(); // 阻止回车键的默认行为
-            document.getElementById("nameForm").submit(); // 提交表单
-        }
-    });
+    // document.getElementById("inputName").addEventListener("keyup", function(event) {
+    //     if (event.keyCode === 13) { // 按下回车键的键码是13
+    //         event.preventDefault(); // 阻止回车键的默认行为
+    //         document.getElementById("nameForm").submit(); // 提交表单
+    //     }
+    // });
 
     bindDeviceAddClick();
     bindDeviceDeleteClick();

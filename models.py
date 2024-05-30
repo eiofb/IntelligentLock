@@ -1,5 +1,6 @@
 from exts import db
 from datetime import datetime
+from enum import Enum
 
 class UserModel(db.Model):
     __tablename__ = "user"
@@ -34,3 +35,15 @@ class DeviceRecordModel(db.Model):
     device = db.relationship(DeviceModel, backref=db.backref("records", order_by=last_open_time.desc()))
     author_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     author = db.relationship(UserModel, backref=db.backref("records", order_by=last_open_time.desc()))
+    
+# 白名单
+class PermissionType(Enum):
+    ADMIN = 'admin'
+    GUEST = 'guest'
+
+class WhiteList(db.Model):
+    __tablename__ = "white_list"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(100), nullable=False)
+    image_path = db.Column(db.String(100), nullable=False, unique=True)
+    acess = db.Column(db.Enum(PermissionType), nullable=False)
