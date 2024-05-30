@@ -2,6 +2,7 @@ from exts import db
 from datetime import datetime
 from enum import Enum
 
+# 管理员
 class UserModel(db.Model):
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -10,12 +11,14 @@ class UserModel(db.Model):
     email = db.Column(db.String(100), nullable=False, unique=True)
     join_time = db.Column(db.DateTime, default=datetime.now)
 
+# 验证码
 class EmailCaptchaModel(db.Model):
     __tablename__ = "email_captcha"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(100), nullable=False, unique=True)
     captcha = db.Column(db.String(100), nullable=False)
 
+# 设备
 class DeviceModel(db.Model):
     __tablename__ = "device"
     id = db.Column(db.String(100), primary_key=True, nullable=False)
@@ -25,6 +28,22 @@ class DeviceModel(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     author = db.relationship(UserModel, backref="devices")
 
+# 白名单
+class PermissionType(Enum):
+    ADMIN = 'admin'
+    GUEST = 'guest'
+
+class GuestModel(db.Model):
+    __tablename__ = "guest"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(100), nullable=False)
+    image_path = db.Column(db.String(100), nullable=False, unique=True)
+    acess = db.Column(db.Enum(PermissionType), nullable=False)
+
+    device_id = db.Column(db.String(100), db.ForeignKey("device.id"))
+    device = db.relationship(DeviceModel, backref=db.backref("guests"))
+
+# 设备记录
 class DeviceRecordModel(db.Model):
     __tablename__ = "device_record"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -33,17 +52,5 @@ class DeviceRecordModel(db.Model):
 
     device_id = db.Column(db.String(100), db.ForeignKey("device.id"))
     device = db.relationship(DeviceModel, backref=db.backref("records", order_by=last_open_time.desc()))
-    author_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    author = db.relationship(UserModel, backref=db.backref("records", order_by=last_open_time.desc()))
-    
-# 白名单
-class PermissionType(Enum):
-    ADMIN = 'admin'
-    GUEST = 'guest'
-
-class WhiteList(db.Model):
-    __tablename__ = "white_list"
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(100), nullable=False)
-    image_path = db.Column(db.String(100), nullable=False, unique=True)
-    acess = db.Column(db.Enum(PermissionType), nullable=False)
+    guest_id = db.Column(db.Integer, db.ForeignKey("guest.id"))
+    guest = db.relationship(GuestModel, backref=db.backref("records", order_by=last_open_time.desc()))

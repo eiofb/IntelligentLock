@@ -14,7 +14,7 @@
                 <div class="col-10" align="center">
                    <table>
                    <thead >{{device.device_name}}</thead>
-                   <a href="/whitelist" style="float: right;">白名单</a>
+                   <a href="{{ url_for('guest.white_list') }}" style="float: right;">白名单</a>
                        <tr>
                            <th>序号</th>
                            <th>开锁方式</th>
