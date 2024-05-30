@@ -5,7 +5,7 @@
 {% block head%}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css')}}">
 <script src="{{ url_for('static', filename='jquery/jquery.3.6.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/table.js') }}"></script>
+<script src="{{ url_for('static', filename='js/white_list.js') }}"></script>
 {% endblock%}
 
 {%block body%}
@@ -16,30 +16,21 @@
                 <button class="btn btn-info" type="button">添加白名单</button>
             </a>
            <table>
+            <thead >{{device.device_name}}</thead>
+            <input type="hidden" name="device_id" value="{{ device.id }}">
                <tr>
                    <th>序号</th>
                    <th>头像</th>
-                   <th>名称</th>
+                   <th>姓名</th>
                    <th>权限</th>
                    <th>操作</th>
                 </tr>
-               {% for device in device_list %}
+               {% for guest in device.guests %}
                     <tr>
                         <td class="count"></td>
-                        <td><a href="{{ url_for('device.device_detail', device_id=device.id) }}">{{device.id}}</a></td>
-                        <td>
-                            <form id="nameForm" class="form-inline my-2 my-lg-0" method="POST" action="{{url_for('device.modify_device')}}">
-                                <input id="inputName" class="form-control mr-sm-2" placeholder="{{device.device_name}}" name="device_name">
-                                <input type="hidden" name="device_id" value="{{ device.id }}">
-                            </form>
-                        </td>
-                        <td>
-                            {% if device.remaining_power %}
-                                {{'%.2f%%' % (device.remaining_power * 100)}}
-                            {% else %}
-                                -
-                            {% endif %}
-                        </td>
+                        <td><img src="{{ url_for('static', filename='images/avator.jpg') }}" alt="Avatar"></td>
+                        <td>{{ guest.name }}</td>
+                        <td>{{ guest.access.value }}</td>
                         <td>
                             <a href="#" onclick="openConfirmModal(event)">
                                 <button class="btn btn-danger" data-device-id="{{ device.id }}" type="button">删除</button>
@@ -48,17 +39,16 @@
                     </tr>
                 {% endfor %}
             </table>
-<!--                </form>-->
         </div>
     <div class="col"></div>
 </div>
 
 
 <!-- 弹窗 -->
-<div id="addDeviceModal" class="modal">
+<div id="addModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeAddModal()">&times;</span>
-        <div class="modal-header">添加设备</div>
+        <div class="modal-header">添加白名单</div>
         <!-- 在这里添加你的弹窗内容 -->
         <div id="warning-message" style="display: center;"></div>
          <div class="row mt-4">
@@ -66,16 +56,30 @@
             <div class="col">
                 <form method="POST" action="#">
                     <div class="form-group">
-                        <label>设备ID</label>
-                        <input type="text" class="form-control" name="add_device_id">
-                        <small id="idHelp" class="form-text text-muted">设备ID唯一且长度3-100</small>
+                        <label for="uploadImage">上传图片</label>
+                        <input type="file" class="form-control-file" id="uploadImage" name="upload_image" accept="image/*">
+                        <small id="imageHelp" class="form-text text-muted">请选择要上传的图片文件</small>
                     </div>
                     <div class="form-group">
-                        <label>设备名</label>
-                        <input type="text" class="form-control" name="add_device_name">
+                        <label>图片预览</label>
+                        <div id="imagePreview" class="border p-3">
+                            <p>上传的图片将在这里预览。</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>姓名</label>
+                        <input type="text" class="form-control" name="add_guest_name">
                         <small id="nameHelp" class="form-text text-muted">长度3-100</small>
                     </div>
-                    <button id="add-device-btn" type="button" class="btn btn-primary btn-block">确认</button>
+                    <div class="form-group">
+                        <label for="permissionType">选择权限类型</label>
+                        <select class="form-control" id="permissionType" name="permission_type">
+                            {% for permission in permissions %}
+                                <option value="{{ permission }}">{{ permission.capitalize() }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button id="add-guest-btn" type="button" class="btn btn-primary btn-block">确认</button>
                 </form>
             </div>
             <div class="col"></div>

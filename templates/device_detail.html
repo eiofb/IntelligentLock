@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title%}{{device.device_id}}{%endblock%}
+{% block title%}{{device.id}}{%endblock%}
 
 {% block head%}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css')}}">
@@ -14,7 +14,7 @@
                 <div class="col-10" align="center">
                    <table>
                    <thead >{{device.device_name}}</thead>
-                   <a href="{{ url_for('guest.white_list') }}" style="float: right;">白名单</a>
+                   <a href="{{ url_for('guest.white_list', device_id=device.id) }}" style="float: right;">白名单</a>
                        <tr>
                            <th>序号</th>
                            <th>开锁方式</th>

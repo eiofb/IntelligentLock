@@ -5,7 +5,7 @@
 {% block head%}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css')}}">
 <script src="{{ url_for('static', filename='jquery/jquery.3.6.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/table.js') }}"></script>
+<script src="{{ url_for('static', filename='js/device_list.js') }}"></script>
 {% endblock%}
 
 {%block body%}
@@ -55,7 +55,7 @@
 
 
 <!-- 弹窗 -->
-<div id="addDeviceModal" class="modal">
+<div id="addModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeAddModal()">&times;</span>
         <div class="modal-header">添加设备</div>

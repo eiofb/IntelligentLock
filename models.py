@@ -28,17 +28,17 @@ class DeviceModel(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     author = db.relationship(UserModel, backref="devices")
 
-# 白名单
+# 访客
 class PermissionType(Enum):
-    ADMIN = 'admin'
-    GUEST = 'guest'
+    admin = 'admin'
+    guest = 'guest'
 
 class GuestModel(db.Model):
     __tablename__ = "guest"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
     image_path = db.Column(db.String(100), nullable=False, unique=True)
-    acess = db.Column(db.Enum(PermissionType), nullable=False)
+    access = db.Column(db.Enum(PermissionType), nullable=False)
 
     device_id = db.Column(db.String(100), db.ForeignKey("device.id"))
     device = db.relationship(DeviceModel, backref=db.backref("guests"))
