@@ -1,4 +1,5 @@
 SECRET_KEY = ";oiasd,sopdeewf"
+UPLOAD_FOLDER = 'uploads/'
 
 HOSTNAME = "127.0.0.1"
 PORT = 3306

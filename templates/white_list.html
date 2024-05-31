@@ -18,6 +18,7 @@
            <table>
             <thead >{{device.device_name}}</thead>
             <input type="hidden" name="device_id" value="{{ device.id }}">
+            <input type="hidden" id="redirect-url" value="{{ url_for('guest.white_list', device_id=device.id) }}">
                <tr>
                    <th>序号</th>
                    <th>头像</th>
@@ -28,12 +29,12 @@
                {% for guest in device.guests %}
                     <tr>
                         <td class="count"></td>
-                        <td><img src="{{ url_for('static', filename='images/avator.jpg') }}" alt="Avatar"></td>
+                        <td><img src="{{ url_for('uploads', filename=guest.image_name) }}" alt="Avatar" style="width: 50px; height: 50px;"></td>
                         <td>{{ guest.name }}</td>
                         <td>{{ guest.access.value }}</td>
                         <td>
                             <a href="#" onclick="openConfirmModal(event)">
-                                <button class="btn btn-danger" data-device-id="{{ device.id }}" type="button">删除</button>
+                                <button class="btn btn-danger" data-guest-id="{{ guest.id }}" type="button">删除</button>
                             </a>
                         </td>
                     </tr>
@@ -75,7 +76,7 @@
                         <label for="permissionType">选择权限类型</label>
                         <select class="form-control" id="permissionType" name="permission_type">
                             {% for permission in permissions %}
-                                <option value="{{ permission }}">{{ permission.capitalize() }}</option>
+                                <option value="{{ permission }}">{{ permission }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -89,12 +90,12 @@
 <div id="confirmModal" class="delete-modal">
     <div class="delete-modal-content">
         <span class="close" onclick="closeConfirmModal()">&times;</span>
-        <div class="delete-modal-header">确认删除设备及其记录</div>
+        <div class="delete-modal-header">确认从白名单中删除</div>
         <!-- 在这里添加你的弹窗内容 -->
          <div class="row mt-4">
             <div class="col"></div>
             <div class="input-group">
-                <input type="hidden" id="deviceIdInput">
+                <input type="hidden" id="guestIdInput">
                 <div class="col"></div>
                 <button type="button" class="btn btn-danger" id="confirm-delete-btn">确认</button>
                 <div class="col"></div>

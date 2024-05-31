@@ -75,7 +75,7 @@ $(function () {
 
 // 打开弹窗
 function openAddModal() {
-    document.getElementById("addDeviceModal").style.display = "block";
+    document.getElementById("addModal").style.display = "block";
 }
 function openConfirmModal(event) {
     var clickedElement = event.target;
@@ -86,7 +86,7 @@ function openConfirmModal(event) {
 
 // 关闭弹窗
 function closeAddModal() {
-    document.getElementById("addDeviceModal").style.display = "none";
+    document.getElementById("addModal").style.display = "none";
 }
 function closeConfirmModal() {
     document.getElementById("confirmModal").style.display = "none";

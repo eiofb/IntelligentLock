@@ -4,15 +4,24 @@ function bindGuestAddClick(){
         // 阻止默认的事件
         event.preventDefault();
 
+        // 获取隐藏元素中的 URL 值
+        var redirectUrl = document.getElementById('redirect-url').value;
+
         // 获取表单数据
         var device_id = $("input[name='device_id']").val();
-        var image_path = $("input[name='upload_image']").val();
         var name = $("input[name='add_guest_name']").val();
-        var access = $("input[name='permission_type']").val();
+        var access = document.getElementById("permissionType").value;
         var formData = new FormData();
-        formData.append("image_path", image_path);
         formData.append("name", name);
         formData.append("access", access);
+        formData.append("device_id", device_id);
+
+        // 获取上传的图片文件
+        var file = document.getElementById('uploadImage').files[0];
+        if (file) {
+            formData.append("upload_image", file);
+        }
+
         $.ajax({
             url: "/guest/add_guest",
             method: "POST",
@@ -22,7 +31,7 @@ function bindGuestAddClick(){
             success: function(result){
                 var code = result["code"];
                 if (code == 200){
-                    location.href= url_for('guest.white_list', device_id=device_id)
+                    location.href= redirectUrl;
                 } else {
                     for (var key in result['data']){
                         $("#warning-message").text(result['data'][key]).show();
@@ -37,11 +46,39 @@ function bindGuestAddClick(){
     });
 }
 
+// 删除访客
+function bindGuestDeleteClick(){
+    document.getElementById("confirm-delete-btn").addEventListener("click", function(event){
+        // 阻止默认的事件
+        event.preventDefault();
+
+        // 获取隐藏元素中的 URL 值
+        var redirectUrl = document.getElementById('redirect-url').value;
+
+        // 获取访客ID
+        var guest_id = $("input[id='guestIdInput']").val();
+        $.ajax({
+            url: "/guest/delete_guest?guest_id=" + guest_id,
+            method: "GET",
+            success: function(result){
+                var code = result['code'];
+                if (code == 200){
+                    location.href = redirectUrl;
+                } else {
+                    alert(result['message']);
+                }
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+    });
+}
+
 // 预览图片
 function bindImageChange(){
     document.getElementById('uploadImage').addEventListener('change', function(event) {
         const file = event.target.files[0];
-        console.log(file);
         const previewContainer = document.getElementById('imagePreview');
         previewContainer.innerHTML = '';
     
@@ -71,6 +108,7 @@ $(function () {
 
     bindImageChange();
     bindGuestAddClick();
+    bindGuestDeleteClick();
 });
 
 // 打开弹窗
@@ -79,8 +117,8 @@ function openAddModal() {
 }
 function openConfirmModal(event) {
     var clickedElement = event.target;
-    var deviceId = clickedElement.getAttribute('data-device-id');
-    document.getElementById('deviceIdInput').value = deviceId;
+    var guestId = clickedElement.getAttribute('data-guest-id');
+    document.getElementById('guestIdInput').value = guestId;
     document.getElementById("confirmModal").style.display = "block";
 }
 

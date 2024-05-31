@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, g, redirect, url_for, jsonify
 from .forms import DeviceForm
-from models import DeviceModel, DeviceRecordModel
+from models import DeviceModel, DeviceRecordModel, GuestModel
 from exts import db
 from decorators import login_required
 
@@ -68,9 +68,10 @@ def modify_device():
 # 删除设备
 @bp.route("/device/delete_device")
 def delete_device():
-    # 删除设备下的记录
+    # 删除设备下的记录及其白名单
     device_id = request.args.get("device_id")
     db.session.query(DeviceRecordModel).filter_by(device_id=device_id).delete()
+    db.session.query(GuestModel).filter_by(device_id=device_id).delete()
 
     # 删除设备
     device = DeviceModel.query.filter_by(id=device_id).first()

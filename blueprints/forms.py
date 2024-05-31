@@ -1,6 +1,7 @@
 import wtforms, os
 from wtforms.validators import Email, Length, EqualTo
 from models import UserModel, EmailCaptchaModel, DeviceModel, PermissionType
+from flask import request
 
 class RegisterForm(wtforms.Form):
     email = wtforms.StringField(validators=[Email(message="邮箱格式错误！")])
@@ -39,14 +40,17 @@ class DeviceForm(wtforms.Form):
         
 # 验证添加访客表单
 class GuestForm(wtforms.Form):
-    name = wtforms.StringField(validators=[Length(min=3, max=100, message="设备名称错误！")])
-    
-    def validate_image_path(self, field):
-        image_path = field.data
-        if not os.path.exists(image_path):
-            raise wtforms.ValidationError(message="文件不存在！")
+    name = wtforms.StringField(validators=[Length(min=1, max=100, message="名称错误！")])
+    access = wtforms.StringField(validators=[Length(min=3, max=100, message="权限名称错误！")])
+    device_id = wtforms.StringField(validators=[Length(min=3, max=100, message="设备id错误！")])
         
     def validate_access(self, field):
         access = field.data
         if access not in [item.value for item in PermissionType]:
             raise wtforms.ValidationError(message="权限不存在！")
+        
+    def validate_device_id(self, field):
+        device_id = field.data
+        device = DeviceModel.query.filter_by(id=device_id).first()
+        if not device:
+            raise wtforms.ValidationError(message="设备不存在！")

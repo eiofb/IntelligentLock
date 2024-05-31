@@ -37,7 +37,7 @@ class GuestModel(db.Model):
     __tablename__ = "guest"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
-    image_path = db.Column(db.String(100), nullable=False, unique=True)
+    image_name = db.Column(db.String(100), nullable=False, unique=True)
     access = db.Column(db.Enum(PermissionType), nullable=False)
 
     device_id = db.Column(db.String(100), db.ForeignKey("device.id"))
