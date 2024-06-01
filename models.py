@@ -19,11 +19,16 @@ class EmailCaptchaModel(db.Model):
     captcha = db.Column(db.String(100), nullable=False)
 
 # 设备
+class DeviceStatus(Enum):         
+    normal = "normal"       
+    fault = "fault"
+
 class DeviceModel(db.Model):
     __tablename__ = "device"
     id = db.Column(db.String(100), primary_key=True, nullable=False)
     device_name = db.Column(db.String(100), nullable=False)
     remaining_power = db.Column(db.Float, default=1.00)
+    status = db.Column(db.Enum(DeviceStatus), nullable=False, default=DeviceStatus("normal"))
 
     author_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     author = db.relationship(UserModel, backref="devices")

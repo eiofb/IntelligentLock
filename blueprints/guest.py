@@ -57,7 +57,7 @@ def delete_guest():
     guest = GuestModel.query.filter_by(id=guest_id).first()
     
     # 删除服务器中的图片
-    file_path = url_for("uploads", filename=guest.image_name)
+    file_path = os.path.join(config.UPLOAD_FOLDER, guest.image_name)
 
     # 检查文件是否存在
     if os.path.exists(file_path):
