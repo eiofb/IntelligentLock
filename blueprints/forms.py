@@ -1,7 +1,6 @@
 import wtforms, os
 from wtforms.validators import Email, Length, EqualTo
-from models import UserModel, EmailCaptchaModel, DeviceModel, PermissionType
-from flask import request
+from models import UserModel, EmailCaptchaModel, DeviceModel, PermissionType, GuestModel
 
 class RegisterForm(wtforms.Form):
     email = wtforms.StringField(validators=[Email(message="邮箱格式错误！")])
@@ -43,7 +42,13 @@ class GuestForm(wtforms.Form):
     name = wtforms.StringField(validators=[Length(min=1, max=100, message="名称错误！")])
     access = wtforms.StringField(validators=[Length(min=3, max=100, message="权限名称错误！")])
     device_id = wtforms.StringField(validators=[Length(min=3, max=100, message="设备id错误！")])
-        
+
+    def validate_name(self, field):
+        name = field.data
+        guest = GuestModel.query.filter_by(name=name).first()
+        if guest:
+            raise wtforms.ValidationError(message="已在白名单中！")
+
     def validate_access(self, field):
         access = field.data
         if access not in [item.value for item in PermissionType]:

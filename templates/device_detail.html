@@ -17,6 +17,8 @@
                    <a href="{{ url_for('guest.white_list', device_id=device.id) }}" style="float: right;">白名单</a>
                        <tr>
                            <th>序号</th>
+                           <th>头像</th>
+                           <th>姓名</th>
                            <th>开锁方式</th>
                            <th>开锁时间</th>
                         </tr>
@@ -24,6 +26,8 @@
                        {% for record in device.records %}
                         <tr >
                                 <td class="count"></td>
+                                <td><img src="{{ url_for('records', filename=record.image_name) }}" alt="Avatar" style="width: 50px; height: 50px;"></td>
+                                <td>{{ record.guest.name }}</td>
                                 {% if record.open_type==0 %}
                                     <td>密码</td>
                                 {% elif record.open_type==1 %}

@@ -1,16 +1,11 @@
-from flask import Blueprint, render_template, request, g, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, jsonify
 from .forms import GuestForm
 from models import DeviceModel, PermissionType, GuestModel
 from exts import db
-from decorators import login_required
+from decorators import login_required, allowed_file, normalize_filename
 import os, config
 
 bp = Blueprint("guest", __name__, url_prefix="/guest")
-
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # 白名单
 @login_required
@@ -36,16 +31,17 @@ def add_guest():
         if file.filename == '':
             print('没有选择文件')
         if file and allowed_file(file.filename):
-            file.save(os.path.join(config.UPLOAD_FOLDER, file.filename))
+            filename = normalize_filename(file.filename, name)
+            file.save(os.path.join(config.UPLOAD_FOLDER, filename))
             print('文件已成功上传')
+
+            device = DeviceModel.query.filter_by(id=device_id).first()
+            guest = GuestModel(name=name, image_name=filename, access=PermissionType(access), device=device)
+            db.session.add(guest)
+            db.session.commit()
+            return jsonify({"code": 200, "message": "", "data": None})
         else:
             print('不允许的文件类型')
-            
-        device = DeviceModel.query.filter_by(id=device_id).first()
-        guest = GuestModel(name=name, image_name=file.filename, access=PermissionType(access), device=device)
-        db.session.add(guest)
-        db.session.commit()
-        return jsonify({"code": 200, "message": "", "data": None})
     else:
         print(form.errors)
         return jsonify({"code": 500, "message": "", "data": form.errors})

@@ -4,6 +4,7 @@ from exts import db, mail
 from blueprints.auth import bp as auth_bp
 from blueprints.device import bp as device_bp
 from blueprints.guest import bp as guest_bp
+from blueprints.record import bp as record_bp
 from flask_migrate import Migrate
 from models import UserModel
 
@@ -19,14 +20,21 @@ migrate = Migrate(app, db)
 app.register_blueprint(auth_bp)
 app.register_blueprint(device_bp)
 app.register_blueprint(guest_bp)
+app.register_blueprint(record_bp)
 
-# 确保上传文件夹存在
+# 确保上传和记录文件夹存在
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+os.makedirs(app.config['RECORD_FOLDER'], exist_ok=True)
 
 # 设置 uploads 文件夹的静态文件路由
 @app.route('/uploads/<filename>')
 def uploads(filename):
     return send_from_directory('uploads', filename)
+
+# 设置 records 文件夹的静态文件路由
+@app.route('/records/<filename>')
+def records(filename):
+    return send_from_directory('records', filename)
 
 @app.before_request
 def my_before_request():
